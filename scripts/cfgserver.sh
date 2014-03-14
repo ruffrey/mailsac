@@ -13,10 +13,10 @@
 	#	cd .ssh
 	#	ssh-agent /bin/bash
 	#	ssh-add id_rsa
-	#	cat id_rsa.pub     (then add to bitbucket account)
+	#	cat id_rsa.pub     (then add to git repo)
 #
 # 1. apt-get update && apt-get upgrade && apt-get install git nano
-# 2. cd /root && git clone git@bitbucket.org:ruffrey/mailsac.git
+# 2. cd /root && git clone <your repo>
 # 3. Check paths and ENV vars in start.sh 
 # 		(use whereis to confirm path locations for binaries)
 # 4. cd mailsac/scripts && sh cfgserver.sh
