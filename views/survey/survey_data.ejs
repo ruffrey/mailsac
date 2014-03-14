@@ -1,0 +1,18 @@
+<%
+	var data; if(typeof(data)=='undefined'){data=[]} 
+%>
+<script src="/js/date-utils.js"></script>
+<h4>feature</h4>
+<table border="1" id="alldata" cellpadding="3" cellspacing="4" width="100%">
+<% 	for(var i=0; i< data.length; i++) 
+	{ 
+%>
+
+	<tr>
+		<td><%=data[i].inbox%></td>
+		<td><%- sanitize( data[i].val ).replace(/\n/g,'<br />') %></td>
+		<td><script>document.write( new Date('<%=data[i].date%>').toFormat('YYYY-MM-DD HH24:MI') );</script></td>
+	</tr>
+
+<% 	} %>
+</table>

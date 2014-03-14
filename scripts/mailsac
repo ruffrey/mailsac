@@ -1,0 +1,6 @@
+#!/bin/sh
+
+@reboot root sh /root/start.sh >> cron.log 2>&1
+
+
+

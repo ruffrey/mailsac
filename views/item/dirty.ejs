@@ -1,0 +1,32 @@
+<table border="0" cellpadding="10px">
+<tr>
+	<td colspan="2" style="border: 2px solid #ccc;">
+		<%- include ../ads/728x90 %>
+	</td>
+	
+</tr>
+<tr>
+<td valign="top" style="width:350px;border: 2px solid #ccc;">
+	<%- include ../ads/336x280 %>
+	<hr />
+	<%- include ../ads/336x280 %>
+</td>
+<td valign="top" style="border: 2px solid #ccc">
+
+	<% if(typeof(errors) !='undefined') { %>
+
+	<h4 style="color:red"><%=JSON.stringify(errors)%></h4>
+
+	<% } else if( typeof(item) == 'undefined' ) { %>
+
+		<h4 style="color:red">unable to load the email</h4>
+
+	<% } else { %><%-item%><% } %>
+
+</td>
+</tr>
+</table>
+
+
+<%- include ../ga.ejs %>
+

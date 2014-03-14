@@ -1,0 +1,111 @@
+<% 
+	var stats; stats=stats||[]; 
+	var data_recd = [["hours ago","messages"]];
+%>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<h1>Mailsac Stats and Trends</h1>
+<p>Most stats are updated hourly.</p>
+
+<div id="chart_recd"></div>
+<br />
+<table class="table table-condensed">
+
+<tbody>
+
+<% 	for(var i=0; i<stats.length; i++) 
+	{ 
+		if(	stats[i].name.indexOf('MESSAGES_RECEIVED_')>-1 )
+		{
+			if(stats[i].val != 0)
+			{
+				data_recd.push([
+					parseFloat(stats[i].name.toString().split('_')[2]),
+					stats[i].val
+				]);
+			}
+		}
+		else{
+%>
+	
+	<tr>
+	<td><%=stats[i].name%></td>
+	<td>
+		<%
+			if(typeof(stats[i].val) == 'object')
+			{
+				if( stats[i].val instanceof Array )
+				{
+					for(var v=0; i<stats[i].val.length; v++)
+					{
+						if(typeof(stats[i].val[v])=='object')
+						{
+							%><%=JSON.stringify(stats[i].val)%><%
+						}
+						else{
+							%><%=stats[i].val[v]%><%
+						}
+				%>
+						<br />
+				<%	}
+				}
+				else if(stats[i].val instanceof Object)
+				{
+					for(var v in stats[i].val)
+					{
+				%>
+						<%=v%>: <%=stats[i].val[v]%>
+						<br />
+				<%	}
+				}
+			}
+			else{
+			%><%=stats[i].val%><%
+			}
+		
+		%>
+	</td>
+	<td><%= new Date(stats[i].updated).toFormat('YYYY-MM-DD HH24:MI:SS')%></td>
+	</tr>
+
+
+<% 		}
+	} 
+%>
+</tbody>
+</table>
+
+<!-- graphing -->
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	
+	google.load("visualization", "1", {packages:["corechart"]});
+	
+    google.setOnLoadCallback(draw_recd);
+    
+    function draw_recd() {
+        var data = google.visualization.arrayToDataTable(
+			<%- JSON.stringify(data_recd) %>
+		);
+
+        var options = {
+			title: 'Messages received hourly',
+			legend: {
+				position: 'none'
+			},
+			hAxis: {
+				direction: -1,
+				title: 'Hours ago'
+			},
+			yAxis: {
+				title: 'Messages received'
+			}
+        };
+
+        var chart = new google.visualization.LineChart(
+			document.getElementById('chart_recd')
+		);
+        chart.draw(data, options);
+    }
+</script>

@@ -1,0 +1,31 @@
+<%  //TODO: refactor google analytics to view partial
+	if( process.env.NODE_ENV=="prod" ) { %> 
+	<script type="text/javascript">
+	  window.google_analytics_uacct = "UA-9491937-9";
+	  
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-9491937-9']);
+	  _gaq.push(['_setDomainName', 'mailsac.com']);
+	  _gaq.push(['_setAllowLinker', true]);
+	  
+	  <% if(inbox) { %>
+	  
+		_gaq.push(['_setCustomVar',
+			1,	// This custom var is set to slot #1.  Required parameter.
+			'inbox',	// The name acts as a kind of category for the user activity.  Required parameter.
+			'<%=inbox%>',	// This value of the custom variable.  Required parameter.
+			3	// Sets the scope to page-level.  Optional parameter.
+		]);
+	 
+	  <% } %>
+	  
+	  _gaq.push(['_trackPageview']);
+	  
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+<% } %>
