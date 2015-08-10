@@ -1,25 +1,45 @@
 {
   "name": "mailsac",
-  "version": "0.6.0",
+  "version": "3.9.1",
   "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "NODE_ENV=development DEBUG=mailsac* node app.js",
+    "msg": "DEBUG=mailsac* node tests/msg-recd.js",
+    "lint": "node_modules/.bin/jscs --config=.jscsrc --reporter=console app.js smtp-server.js schemas.js lib/*.js public/**/*.js routes/**.js; jshint app.js smtp-server.js schemas.js lib/*.js public/**/*.js routes/**.js;"
   },
   "license": "MIT",
   "dependencies": {
-    "express": "3.1.0",
-    "ejs": "0.8.x",
-    "express-ejs-layouts": "*",
-    "less-middleware": "*",
-    "node-markdown": "*",
-    "sanitizer": "*",
-    "mongoose": "3.6.x",
-    "mongoose-findorcreate": "0.1.x",
-    "colors": "*",
-    "date-utils": "1.2.x",
-    "ejs-locals": "1.0.x",
-    "simplesmtp": "0.2.x",
-    "mailparser": "0.3.x",
-    "nodemailer": "~0.5.2"
+    "async": "^1.4.0",
+    "body-parser": "^1.13.3",
+    "compression": "^1.5.2",
+    "config": "^1.15.0",
+    "connect-redis": "^2.4.1",
+    "cookie-parser": "^1.3.5",
+    "debug": "^2.2.0",
+    "email-validation": "^0.1.1",
+    "express": "^4.13.2",
+    "express-session": "^1.11.3",
+    "html-to-text": "^1.3.1",
+    "jade": "^1.11.0",
+    "less-middleware": "^2.0.1",
+    "longjohn": "^0.2.7",
+    "mailparser": "^0.5.2",
+    "moment": "^2.10.6",
+    "mongoose": "^4.1.0",
+    "morgan": "^1.6.1",
+    "nodemailer": "^0.7.1",
+    "recaptcha": "^1.2.1",
+    "request": "^2.60.0",
+    "sanitizer": "^0.1.2",
+    "serve-favicon": "^2.3.0",
+    "simplesmtp": "^0.3.35"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  },
+  "devDependencies": {
+    "jscs": "^2.0.0",
+    "jshint": "^2.8.0"
   }
 }

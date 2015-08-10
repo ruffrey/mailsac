@@ -1,48 +1,104 @@
-# <span class="skinny">Mailsac</span> is a disposable email inbox
+# Mailsac v2
 
-<br />
+The *receive-only* mail server powering [Mailsac.com](https://mailsac.com).
 
-## what exactly is mailsac?
-Mailsac is a free [open source](https://github.com/ruffrey/mailsac) email inbox service that accepts all mail that gets sent to it. All mail is regularly deleted at a specified period of time.
+You can throw it onto a server pretty easily and use it for testing *incoming* email.
 
-## how do I use mailsac?
-Give out any email address you can think of *@mailsac.com* and you can instantly receive mail anonymously there.
+Mailsac >=2.0.0 is a complete rewrite and not compatible with <2.0.0.
 
-No need to sign up or set anything up.
+## Setup
 
-## why would I use mailsac?
-Any time you need a temporary email address, just make one up *@mailsac.com*
+### Instructions for Ubuntu 14.04
 
-- if you need an email address but do not want to receive spam in your personal inbox
-- use it for sign ups on web sites that force you to log in
-- give it out to strangers
-- use it to collaborate for projects
-- send mail to mailsac for testing purposes
-- use it when you (legally) want to receive email without disclosing your identity
-- it is perfect if you want an email address or multiple addresses and do not want to sign up for them
+On a fresh server, download the script `./install/ubuntu-1404.sh` and run it:
 
-### how long is email saved?
-Email messages are saved for somewhere between 1 week or more and three days, sometimes less. I make no guarantees but it should pretty much always be more than a day!
+```bash
+wget https://github.com/ruffrey/mailsac/blob/master/install/ubuntu-1404.sh
+sudo sh ubuntu-1404.sh
+```
 
-### can I use mailsac.com to host email for my domain, such as example.com?
-Heck yes! Just set up your DNS settings for MX to point to *mailsac.com* - <a href="http://mailsac.com/domainsetup">more info here</a>.
+Or from a local version of the repository:
 
-### how do I reply to my mailsac emails?
-You cannot reply to mailsac emails. Mailsac is a receive-only inbox.
+```bash
+ssh root@MYHOSTNAME 'bash -s' < install/ubuntu-1404.sh
+```
 
-### where are my email attachments?
-Attachments are never saved.
+### Instructions for everything else
+Remove or disable any services that are bound to ports 25 and 587. These are
+used by SMTP and required by the Mailsac `./smtp-server.js`.
 
-### why are my emails not coming through?
-The maximum email address prefix (the *junky-face* in *junky-face@mailsac.com*) length is 25 characters. Also, please make sure the email address conforms to typical standards. Most Unicode characters should work, but I only tested English letters.
-Another possibility is that the incoming email was marked as spam. Mailsac has relatively mild spam filters, but your messages might be getting caught.
+## Redeploy
 
-### can I setup my own mailsac?
-Yep, just go to the [open source project](https://github.com/ruffrey/mailsac), update the config.js file, and you're good to go!
+There is a helper script `./deploy` which can be used to deploy the current
+directory to a remote server where Mailsac has been installed.
 
-You can use your own Mailsac for testing or email hosting, or something.
+```bash
+./deploy root@mailsac.com # assumes your ssh key is on host
+```
 
-Mailsac just asks that you link back to us and don't steal our name.
+#### Deps
 
-### how do I report a bug or request a feature?
-Use the [GitHub issues feature on the Mailsac GitHub page](https://github.com/ruffrey/mailsac/issues).
+* Node.js >= 0.12.0
+* MongoDB
+* Redis
+* Nothing blocking the mail ports (25 and 587)
+
+#### Running
+
+`node app`
+
+There are `DEBUG=` environment variables which
+will help with troubleshooting. See `./package.json` - `"scripts"`.
+
+### Advanced configuration
+
+Adjust **`./config.js`** to suit your needs.
+
+## Not for Node.js cloud hosts
+
+Mailsac runs on VPS or bare servers.
+
+It will not work on Node.js cloud services (like AppFog, Heroku) because they won't give you access to SMTP ports.
+
+You could use a service like [Paastor](https://paastor.com) or Docker to manage and deploy Node.js apps on a VPS.
+
+## Plugins
+
+Pluggable features can be added to Mailsac.
+
+There are hooks into the UI application and SMTP processes.
+
+An example plugin is found in the `./plugins/` folder. See it for details.
+
+A plugin must either be:
+* a file with `.plugin.js` as the extension
+
+You can extend the base `./views/layout.jade` template by having the following jade files
+in your plugin folder.
+
+* `./plugins/myexample.plugin/includes/head.jade`
+* `./plugins/myexample.plugin/includes/footer.jade`
+
+```javascript
+
+```
+
+# Development
+
+Follow the code quality guidelines by running:
+
+```bash
+npm run lint
+```
+
+Pull requests against master are welcome.
+
+# License
+
+MIT
+
+Copyright (c) 2012 - 2015 Jeff H. Parrish
+
+The code written for the Mailsac project is covered by the LICENSE
+file at the root of this project. All other code is copyright and licensed
+under its respective licensors.

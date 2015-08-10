@@ -1,0 +1,12 @@
+{
+    "excludeFiles": [
+        "node_modules/**",
+        ".tmp/**"
+    ],
+    "validateIndentation": 4,
+    "requireSpaceBeforeBlockStatements": true,
+    "requireSpacesInAnonymousFunctionExpression": {
+        "beforeOpeningRoundBrace": true,
+        "beforeOpeningCurlyBrace": true
+    }
+}

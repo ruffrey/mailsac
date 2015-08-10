@@ -1,0 +1,86 @@
+extends layout
+
+block content
+
+    //- The inbox
+    .inbox(
+        ng-init="inbox = '"+email+"';"
+    ): div(ng-controller="InboxController")
+        h2 {{ inbox }}
+        span.help-block= utils.encryptInbox(email)
+            | @mailsac.com
+        h3(ng-show="messages !== null")
+            | {{ messages.length }} message{{ messages.length === 1 ? "" : "s" }}
+        br
+        table.table.table-condensed(
+            align="left"
+            style="margin-left: -15px;margin-right: -15px;"
+        )
+            tbody
+                tr: td
+                    include ad-responsive
+                tr(ng-show="messages === null")
+                    td.align-left(colspan="3") Loading...
+                tr(ng-show="messages && messages.length === 0")
+                    td.align-left(colspan="3") No mail!
+                tr.clickable(
+                    ng-repeat="msg in messages"
+                    ng-init="msg.isVisible = false; confDelete = false;"
+                )
+
+                    //- Message preview
+                    td.active.not-clickable(colspan="3" ng-show="msg.isVisible")
+                        .btn-group.pull-right
+                            a.btn.btn-info.btn-xs(ng-href="/dirty/{{ msg._id }}" target="_blank")
+                                | Unblock links and images  &nearr;
+                            a.btn.btn-default.btn-xs(ng-href="/raw/{{ msg._id }}" target="_blank")
+                                | View headers  &nearr;
+                            button.btn.btn-primary.btn-xs(
+                                ng-click="confDelete = true"
+                                ng-show="!confDelete"
+                            )
+                                | Delete...
+                            button.btn.btn-primary.btn-xs(
+                                ng-click="deleteMessage(msg)"
+                                ng-show="confDelete"
+                            )
+                                | Permanently delete
+                            button.btn.btn-default.btn-xs(
+                                ng-click="confDelete = false"
+                                ng-show="confDelete"
+                            )
+                                | Do not delete
+                            button.btn.btn-danger.btn-xs(ng-click="msg.isVisible = false")
+                                | Close
+                        
+                        //- Message preview header
+                        br
+                        br
+                        p {{ msg.from[0].address }}
+                            br
+                            | {{ msg.subject }}
+                            br
+                            | {{ moment(msg.received).fromNow() }}
+                            
+                        hr 
+                        //- The message html       
+                        div(ng-bind-html="trustAsHtml(msg.body)")
+                    
+                    td.col-xs-4(ng-show="!msg.isVisible" ng-click="msg.isVisible = !msg.isVisible")
+                        if (showRecipient)
+                            span
+                                small.help-inline: small: small FROM
+                                | &nbsp;&nbsp;&nbsp;{{ msg.from[0].address }}
+                            br
+                            span
+                                small.help-inline: small: small TO
+                                strong &nbsp;&nbsp;&nbsp;{{ msg.to[0].address }}
+                        else
+                            strong {{ msg.from[0].address }}
+                    td.col-xs-5(ng-show="!msg.isVisible" ng-click="msg.isVisible = !msg.isVisible") {{ msg.subject }}
+                    td.col-xs-2.align-right(ng-show="!msg.isVisible" ng-click="msg.isVisible = !msg.isVisible")
+                        small {{ moment(msg.received).fromNow() }}
+        
+        
+        .row
+            include ad-large-mobile
