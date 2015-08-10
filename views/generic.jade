@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    .container
+        h1= title
+        br
+        h5= message  
+        
+        if (body)
+            hr
+            p Details
+            pre: code= JSON.stringify(body, null, 2)

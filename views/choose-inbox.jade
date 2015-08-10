@@ -1,0 +1,21 @@
+.choose-inbox.align-center
+    input.myinbox.form-control.align-right(
+        type="text"
+        ng-model="myinbox"
+        placeholder="anything"
+        ms-enter="navToInbox(myinbox, postfix)"
+        autofocus
+    )
+    input.postfix.form-control(
+        type="text"
+        ng-model="postfix"
+        ng-init="postfix = '@mailsac.com'"
+        placeholder="@mailsac.com"
+        ms-enter="navToInbox(myinbox, postfix)"
+    )
+    br
+    br
+    button.btn.btn-primary(
+        ng-click="navToInbox(myinbox, postfix)"
+        ng-disabled="!myinbox || !postfix"
+    ) Check the mail!

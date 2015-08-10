@@ -1,0 +1,44 @@
+#! /bin/sh
+
+# immediately abort if any of these commands fail
+set -e
+
+####
+# The name of your app goes here and should match the .conf file
+####
+APPNAME=mailsac
+
+LOGIN=$1
+
+
+ssh $LOGIN "mkdir -p /opt/$APPNAME"
+ssh $LOGIN "rm -rf /opt/$APPNAME-temp; mkdir -p /opt/$APPNAME-temp"
+
+echo '\n Doing some housecleaning \n'
+    ssh $LOGIN 'rm -f /opt/$APPNAME-temp/$APPNAME.tar.gz;'
+    rm -f "$APPNAME.tar.gz"
+
+
+echo '\n Making the artifact \n'
+    tar czf $APPNAME.tar.gz --exclude='node_modules' *
+    du -h $APPNAME.tar.gz
+
+
+echo '\n Copying the artifact \n'
+    scp $APPNAME.tar.gz $LOGIN:/opt/$APPNAME-temp
+
+echo '\n Setting up the new artifact on the server \n'
+    ssh $LOGIN "cd /opt/$APPNAME; \
+        sudo rm -rf *; \
+        cp -f '/opt/$APPNAME-temp/$APPNAME.tar.gz' '/opt/$APPNAME'; \
+        tar xzf '$APPNAME.tar.gz'; \
+        sudo cp -f 'install/$APPNAME.conf' /etc/init;"
+
+echo '\n npm install\n'
+    ssh $LOGIN "cd '/opt/$APPNAME'; sudo service '$APPNAME' stop; sudo /usr/bin/npm install --production;"
+
+echo '\n Starting the app\n'
+    ssh $LOGIN "sudo service '$APPNAME' restart"
+
+echo 'Done.'
+exit 0;

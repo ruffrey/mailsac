@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    .container.on-top.relative
+        h1= message
+        h2= error ? error.status || error : ''
+        h6 Support email:
+            = ' ' + config.get('email.support')
+        h6: a.btn.btn-primary(href="/")= config.get('name')
+        if (process.env.NODE_ENV !== 'production' && error.stack)
+            pre #{error.stack}    

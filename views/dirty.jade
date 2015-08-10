@@ -1,0 +1,33 @@
+block content
+    style(type='text/css').
+        .btn {
+            color: #ffffff;
+            background-color: #336699;
+            border: 1px solid #336699;
+            padding: 5px;
+            font-family: sans-serif;
+            font-size: 12px;
+            text-decoration: none;
+        }
+    .row.align-center
+        include ad-responsive
+    
+    hr
+    if (user)
+        form(action="/compose" method="post")
+            input(type="hidden" name="from" value=message.inbox)
+            input(type="hidden" name="to" value=message.from[0].address)
+            input(type="hidden" name="subject" value="RE: " + message.subject)
+            input(type="hidden" name="text" value="\n\n----\n" + message.text)
+            button.btn(
+                type="submit"
+            ) Reply
+    else
+        a.btn(href="/auth/login?continue="+req.url) Log into Mailsac reply
+    hr
+    
+    !=message.html || message.text
+    
+    hr
+    .row.align-center
+        include ad-responsive
