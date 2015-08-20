@@ -13,7 +13,7 @@ Mailsac >=2.0.0 is a complete rewrite and not compatible with <2.0.0.
 On a fresh server, download the script `./install/ubuntu-1404.sh` and run it:
 
 ```bash
-wget https://github.com/ruffrey/mailsac/blob/master/install/ubuntu-1404.sh
+wget https://raw.githubusercontent.com/ruffrey/mailsac/master/install/ubuntu-1404.sh
 sudo sh ubuntu-1404.sh
 ```
 
