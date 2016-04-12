@@ -52,7 +52,7 @@ will help with troubleshooting. See `./package.json` - `"scripts"`.
 
 ### Advanced configuration
 
-Adjust **`./config.js`** to suit your needs.
+Change `./config/default.json` or add config files matching `NODE_ENV` environment variable. See more instructions for `node-config`: https://github.com/lorenwest/node-config/wiki
 
 ## Not for Node.js cloud hosts
 
@@ -60,7 +60,8 @@ Mailsac runs on VPS or bare servers.
 
 It will not work on Node.js cloud services (like AppFog, Heroku) because they won't give you access to SMTP ports.
 
-You could use a service like [Paastor](https://paastor.com) or Docker to manage and deploy Node.js apps on a VPS.
+You could use a service like Docker to manage and deploy Node.js apps on a VPS. Or just deploy to a normal VPS
+using the `./deploy` script, git, or something else.
 
 ## Plugins
 
